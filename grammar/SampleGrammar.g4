@@ -8,12 +8,15 @@ grammar SampleGrammar;
 r : statement | statement+ (CR|LF);
 
 statement: (assignment | calculation);
-assignment: VAR EQL NUMBER ';' ;
-calculation: VAR EQL (VAR | NUMBER) CALCULATIVE_OPERAND (VAR | NUMBER) ';' ;
+assignment: var EQL number ';' ;
+calculation: var EQL (var | number) CALCULATIVE_OPERAND (var | number) ';' ;
+var: NAME_START_CHAR name_char* ;
+number: DIGIT+;
+name_char : NAME_START_CHAR | DIGIT;
 
 CALCULATIVE_OPERAND : (ADD | SUB | MUL | DIV | MOD);
-NUMBER: [0123456789]+;
-VAR: NameStartChar NameChar*;
+
+
 
 WHITE_SPACE : [ \r\t\n]+ -> skip ;
 
@@ -26,29 +29,9 @@ EQL : '=';
 CR  : '\r';
 LF  : '\n';
 SP  : ' ';
+QT  : '\"' ;
+CLN : ':';
+DIGIT: [0-9];
+NON_ZERO_DIGIT: [1-9];
+NAME_START_CHAR : [a-zA-Z_$];
 
-
-
-fragment
-NameChar
-   : NameStartChar
-   | '0'..'9'
-   | '_'
-   | '\u00B7'
-   | '\u0300'..'\u036F'
-   | '\u203F'..'\u2040';
-
-fragment
-NameStartChar
-   : 'A'..'Z' | 'a'..'z'
-   | '\u00C0'..'\u00D6'
-   | '\u00D8'..'\u00F6'
-   | '\u00F8'..'\u02FF'
-   | '\u0370'..'\u037D'
-   | '\u037F'..'\u1FFF'
-   | '\u200C'..'\u200D'
-   | '\u2070'..'\u218F'
-   | '\u2C00'..'\u2FEF'
-   | '\u3001'..'\uD7FF'
-   | '\uF900'..'\uFDCF'
-   | '\uFDF0'..'\uFFFD';
