@@ -19,11 +19,11 @@ str: QT name_char* QT;
 /* //taken from: http://json.org/
 HEX_CHAR: [0-9a-f];
 e : 'e' | 'e+' | 'e-' | 'E' | 'E+' | 'E-';
-digits: DIGIT digits* ;
+digits: SINGLE_DIGIT digits* ;
 exp : e digits;
 frac : '.' digits;
-positive_int : DIGIT | NON_ZERO_DIGIT digits;
-negative_int : '-' (DIGIT | NON_ZERO_DIGIT digits);
+positive_int : SINGLE_DIGIT | NON_ZERO_DIGIT digits;
+negative_int : '-' (SINGLE_DIGIT | NON_ZERO_DIGIT digits);
 int: positive_int | negative_int;
 number: int | int frac | int exp | int frac exp;
 UNI_HEX : '\u'HEX_CHAR{4,4};
