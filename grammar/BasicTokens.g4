@@ -1,13 +1,21 @@
-grammar BasicTokens;
+lexer grammar BasicTokens;
 
 
-NUMBER              : (DIGIT+ | '-' DIGIT+ | '+' DIGIT+);
 VARIABLE_NAME       : NAME_START NAME_CHAR*;
-STRING              : NAME_CHAR+;
-SINGLE_DIGIT        : DIGIT;
 TRUE                : T R U E;
 FALSE               : F A L S E;
 NULL                : N U L L;
+STRING              : '"' (ESCAPE | ~["\\])* '"' ;
+NUMBER              : INT (FRAC | EXP | FRAC EXP)? ;
+COMMA               : ',';
+LPAREN              : '{';
+RPAREN              : '}';
+LBOX                : '[';
+RBOX                : ']';
+COLON               : ':';
+SEMI                : ';';
+
+WHITE_SPACE         : [ \t\r\n]+ -> skip;
 
 fragment NAME_START
                 : A | B | C | D | E | F | G | H | I | J | K | L | M
@@ -31,8 +39,6 @@ fragment NAME_CHAR
                  | '\u00B7'
                  | '\u0300'..'\u036F'
                  | '\u203F'..'\u2040';
-
-fragment DIGIT  : '0'..'9';
 
 fragment A      : ('a'|'A');
 fragment B      : ('b'|'B');
@@ -60,3 +66,13 @@ fragment W      : ('w'|'W');
 fragment X      : ('x'|'X');
 fragment Y      : ('y'|'Y');
 fragment Z      : ('z'|'Z');
+
+fragment DIGITS     : DIGIT DIGITS*;
+fragment DIGIT      : [0-9];
+fragment EX          : ('e'|'E')('+'|'-')?;
+fragment EXP        : EX DIGITS;
+fragment FRAC       : '.' DIGITS;
+fragment INT        : '-'? ('0' | [1-9][0-9]*);
+fragment ESCAPE     : '\\' (["\\/bfnrt]|UNICODE );
+fragment UNICODE    : 'u' HEX HEX HEX HEX;
+fragment HEX        : [0-9a-fA-F];
