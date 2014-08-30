@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="compiler:war">
+    <output-path>$PROJECT_DIR$/compiler/target</output-path>
+    <root id="archive" name="ral.war">
+      <element id="artifact" artifact-name="compiler:war exploded" />
+    </root>
+  </artifact>
+</component>
