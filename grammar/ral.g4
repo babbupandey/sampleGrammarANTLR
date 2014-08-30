@@ -1,33 +1,17 @@
-grammar ral;
-import BasicTokens;
+grammar RAL;
+import SampleGrammar;
+import JsonGrammar;
 
-create_settings : CREATE SETTINGS VARIABLE_NAME json ';' ;
-create_workflow : CREATE WORKFLOW VARIABLE_NAME json ';' ;
-use_case        : USE VARIABLE_NAME json ';' ;
+ral : (create | imprt);
 
-json: json_array | json_string;
-json_array: '[' (json_string | json_array) (',' json_string)* (',' json_array)* ']' ;
-json_string: '{' keyValues (',' json_string)* (',' json_array)* '}';
-keyValues : keyValuePair (',' keyValues)* ;
-keyValuePair: key ':' value;
+create : CREATE_KEYWORD EXPOSURE_TYPE json ';' ;
+imprt : IMPORT_KEYWORD EXPOSURE_TYPE file_name ';' ;
+file_name : var '.txt';
 
-value: (str | NUMBER);
-key: '\"' VARIABLE_NAME '\"' ;
-str: '\"' STRING '\"';
+CREATE_KEYWORD : 'create' ;
+IMPORT_KEYWORD : 'import' ;
+EXPOSURE_TYPE : (CONTRACT | RISK_ITEM | PORTFOLIO) ;
 
-
-
-USE                 : U S E;
-SELECT              : S E L E C T;
-FROM                : F R O M;
-WHERE               : W H E R E;
-GROUPBY             : G R O U P WHITE_SPACE B Y;
-HAVING              : H A V I N G;
-CREATE              : C R E A T E;
-WORKFLOW            : W O R K F L O W;
-SETTINGS            : S E T T I N G S;
-EXTENDS             : E X T E N D S;
-
-WHITE_SPACE         : [ \t\r\n]+ -> skip;
-
-
+CONTRACT : 'contract';
+RISK_ITEM : 'risk_item';
+PORTFOLIO : 'portfolio';
