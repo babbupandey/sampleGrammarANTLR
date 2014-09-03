@@ -8,12 +8,22 @@ NULL                : N U L L;
 STRING              : '"' (ESCAPE | ~["\\])* '"' ;
 NUMBER              : INT (FRAC | EXP | FRAC EXP)? ;
 COMMA               : ',';
-LPAREN              : '{';
-RPAREN              : '}';
+LCURLY              : '{';
+RCURLY              : '}';
+LPAREN              : '(';
+RPAREN              : ')';
 LBOX                : '[';
 RBOX                : ']';
 COLON               : ':';
 SEMI                : ';';
+BANG                : '!';
+PLUS                : '+';
+MINUS               : '-';
+DIVIDE              : '/';
+MULTIPLY            : '*';
+MODULO              : '%';
+EXPONENT            : '^';
+BINARY_OPERATOR     : PLUS | MINUS | DIVIDE | MULTIPLY | MODULO | EXPONENT;
 
 WHITE_SPACE         : [ \t\r\n]+ -> skip;
 
