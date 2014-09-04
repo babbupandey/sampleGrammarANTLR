@@ -1,4 +1,4 @@
-parser grammar json;
+parser grammar JSON;
 options {tokenVocab=BasicTokens;}
 
 value               : STRING | NUMBER | json | TRUE | FALSE | NULL;
