@@ -1,7 +1,56 @@
-lexer grammar BasicTokens;
+grammar RAL;
+
+structureDef        : STRUCTURE STRUCTURE_NAME AS LOSS PREMIUM EXPENSE ;
+positionDef         : POSITION_NAME IS (POSITION_NAME|NUMBER) BINARY_OPERATOR (POSITION_NAME|NUMBER) ;
+
+create_setting      : CREATE SETTINGS VARIABLE_NAME json ;
+create_workflow     : CREATE WORKFLOW VARIABLE_NAME json ;
+create_entity       : CREATE ENTITY VARIABLE_NAME (EXTENDS VARIABLE_NAME)? json ;
+create_structure    : CREATE STRUCTURE VARIABLE_NAME AS LCURLY positionDef+ RCURLY ;
+
+createExpr          : (create_entity | create_workflow | create_setting | create_structure) SEMI ;
+
+use                 : USE VARIABLE_NAME ;
+selectExpr          : SELECT FUNCTION_NAME+ FROM STRUCTURE_NAME+ ;
+whereExpr           : WHERE json;
+groupExpr           : GROUP BY STRUCTURE_NAME (HAVING json)? ;
+
+analysis            : use selectExpr (whereExpr (groupExpr)? )? ;
+
+/** JSON GRAMMAR **/
+value               : STRING | NUMBER | json | TRUE | FALSE | NULL ;
+elements            : value (COMMA elements)*? ;
+array               : LBOX elements* RBOX ;
+pair                : STRING COLON value ;
+members             : pair (COMMA members)*? ;
+object              : LCURLY members* RCURLY ;
+json                : object | array ;
 
 
-VARIABLE_NAME       : NAME_START NAME_CHAR*;
+
+USE                 : U S E;
+SELECT              : S E L E C T;
+FROM                : F R O M;
+WHERE               : W H E R E;
+GROUP               : G R O U P ;
+BY                  : B Y;
+HAVING              : H A V I N G;
+CREATE              : C R E A T E;
+WORKFLOW            : W O R K F L O W;
+SETTINGS            : S E T T I N G S;
+EXTENDS             : E X T E N D S;
+ENTITY              : E N T I T Y;
+VALUES              : V A L U E S;
+STRUCTURE           : S T R U C T U R E;
+AS                  : A S;
+IS                  : I S;
+LOSS                : L O S S ;
+PREMIUM             : P R E M I U M ;
+EXPENSE             : E X P E N S E ;
+SCHEDULE            : S C H E D U L E;
+ALTER               : A L T E R;
+NET                 : N E T;
+GROSS               : G R O S S;
 TRUE                : T R U E;
 FALSE               : F A L S E;
 NULL                : N U L L;
@@ -24,6 +73,13 @@ MULTIPLY            : '*';
 MODULO              : '%';
 EXPONENT            : '^';
 BINARY_OPERATOR     : PLUS | MINUS | DIVIDE | MULTIPLY | MODULO | EXPONENT;
+
+VARIABLE_NAME       : NAME_START NAME_CHAR*;
+
+POSITION_TYPE       : NET | GROSS | NUMBER;
+FUNCTION_NAME       : VARIABLE_NAME LPAREN POSITION_TYPE+ RPAREN ;
+POSITION_NAME       : VARIABLE_NAME (BANG VARIABLE_NAME)? ;
+STRUCTURE_NAME      : VARIABLE_NAME ;
 
 WHITE_SPACE         : [ \t\r\n]+ -> skip;
 
@@ -86,3 +142,4 @@ fragment INT        : '-'? ('0' | [1-9][0-9]*);
 fragment ESCAPE     : '\\' (["\\/bfnrt]|UNICODE );
 fragment UNICODE    : 'u' HEX HEX HEX HEX;
 fragment HEX        : [0-9a-fA-F];
+
