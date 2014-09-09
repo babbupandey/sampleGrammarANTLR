@@ -19,10 +19,10 @@ analysis            : use selectExpr (whereExpr (groupExpr)? )? ;
 
 /** JSON GRAMMAR **/
 value               : STRING | NUMBER | json | TRUE | FALSE | NULL ;
-elements            : value (COMMA elements)*? ;
+elements            : value (COMMA elements)* ;
 array               : LBOX elements* RBOX ;
 pair                : STRING COLON value ;
-members             : pair (COMMA members)*? ;
+members             : pair (COMMA members)* ;
 object              : LCURLY members* RCURLY ;
 json                : object | array ;
 
